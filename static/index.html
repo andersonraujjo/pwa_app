@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12208F">
+  <meta name="description" content="UniApp — portal do aluno (dados fictícios).">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UniApp">
+  <title>UniApp — Portal do aluno</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+  <div class="phone" id="phone">
+    <div class="notch" aria-hidden="true"></div>
+    <div class="offline-bar" id="offlineBar" hidden aria-hidden="true">Sem conexão</div>
+    <div class="update-bar" id="updateBar" hidden>
+      <span>Nova versão disponível — Atualizar</span>
+      <button type="button" id="btnAtualizar">Atualizar</button>
+    </div>
+    <div class="ios-banner" id="iosBanner" hidden>
+      <p>No iPhone: toque em <strong>Compartilhar</strong> e depois <strong>Adicionar à Tela de Início</strong>. <span class="muted">Para instalar o UniApp.</span></p>
+      <button type="button" id="btnIosDismiss">Dispensar</button>
+    </div>
+    <button type="button" class="btn-install" id="btnInstalar" hidden>Instalar app</button>
+
+    <section class="screen active" id="screen-splash" aria-hidden="false">
+      <div class="brand">
+        <p class="brand-mark">Uni<span>App</span></p>
+        <p class="brand-sub">Portal do aluno</p>
+        <div class="splash-bar" aria-hidden="true"><span></span></div>
+      </div>
+    </section>
+
+    
+    <section class="screen" id="screen-login" aria-hidden="true">
+      <form class="login-card" id="formLogin" novalidate>
+        <p class="login-kicker">Acesso do aluno</p>
+        <h2>Entrar</h2>
+        <label class="lbl">Matrícula
+          <input type="text" name="matricula" id="loginMatricula" autocomplete="username" maxlength="32" placeholder="Ex.: A000001" required>
+        </label>
+        <label class="lbl">Senha
+          <span class="senha-wrap">
+            <input type="password" name="senha" id="loginSenha" autocomplete="current-password" maxlength="128" placeholder="Sua senha" required>
+            <button type="button" class="toggle-senha" id="toggleSenha" data-action="toggle-senha" aria-label="Mostrar ou ocultar senha">Ver</button>
+          </span>
+        </label>
+        <p class="login-erro" id="loginErro" hidden></p>
+        <button type="submit" class="btn btn-navy" id="btnLogin">Entrar</button>
+        <p class="login-hint">Demonstração: A000001 / demo1234<br>TODO fase 2: WebAuthn</p>
+      </form>
+    </section>
+<section class="screen" id="screen-home" aria-hidden="true">
+      <header class="hero">
+        <div class="hero-top">
+          <svg class="avatar" viewBox="0 0 80 80" width="56" height="56" aria-hidden="true"><circle cx="40" cy="40" r="40" fill="#D9E0F7"/><circle cx="40" cy="32" r="12" fill="#12208F"/><path d="M14 68c5-16 16-22 26-22s21 6 26 22" fill="#12208F"/></svg>
+          <div class="hero-id">
+            <p class="hello">Olá, Aluno</p>
+            <p class="course" id="homeCurso"></p>
+          </div>
+          <button type="button" class="icon-btn" data-action="logout" aria-label="Sair do aplicativo">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 7V5h8v14h-8v-2"/><path d="M4 12h10"/><path d="M7 9l-3 3 3 3"/></svg>
+          </button>
+        </div>
+        <div class="hero-chips">
+          <span class="chip chip-light" id="homeMat"></span>
+          <span class="chip chip-green">Ativo</span>
+        </div>
+      </header>
+      <div class="screen-body">
+        <h2 class="sec-title">Acesso rápido</h2>
+        <div class="grid" id="gridAtalhos"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-carteira" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Carteira estudantil</h1>
+      </header>
+      <div class="screen-body">
+        <article class="id-card">
+          <div class="id-top">
+            <div class="id-brand">Uni<span>App</span></div>
+            <div class="id-kicker">ESTUDANTE</div>
+          </div>
+          <div class="id-person">
+            <svg class="avatar" viewBox="0 0 80 80" width="64" height="64" aria-hidden="true"><circle cx="40" cy="40" r="40" fill="#D9E0F7"/><circle cx="40" cy="32" r="12" fill="#12208F"/><path d="M14 68c5-16 16-22 26-22s21 6 26 22" fill="#12208F"/></svg>
+            <div>
+              <h2 id="cardNome"></h2>
+              <p id="cardCurso"></p>
+              <div class="id-chips" style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;">
+                <span class="chip chip-green">Ativo</span>
+                <span class="chip chip-yellow" id="offlineFlag" hidden>Offline</span>
+              </div>
+            </div>
+          </div>
+          <div class="id-meta">
+            <div><small class="lbl-cap">Matrícula</small><b id="cardMat"></b></div>
+            <div><small class="lbl-cap">Turma</small><b id="cardTurma"></b></div>
+            <div><small class="lbl-cap">Campus</small><b id="cardCampus"></b></div>
+            <div><small class="lbl-cap">Validade</small><b id="cardVal"></b></div>
+          </div>
+          <div class="id-progress">
+            <div class="row"><span>Integralização do curso</span><span id="progressValue">0%</span></div>
+            <div class="bar"><span id="progressBar" style="width:0"></span></div>
+          </div>
+        </article>
+        <div class="stack">
+          <button type="button" class="btn btn-navy btn-block" data-action="catraca">Acesso às catracas</button>
+          <div class="qr-wrap">
+            <div class="qr-box">
+              <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+              <div id="qrHost" aria-label="QR code da carteirinha"></div>
+            </div>
+            <p class="gerado" id="geradoEm">Gerado em --/--/---- --:--</p>
+          </div>
+          <button type="button" class="offline-row" id="offlineBtn" data-action="offline" aria-pressed="false">
+            <span class="switch" aria-hidden="true"><i></i></span>
+            <span>
+              <strong>Carteirinha offline e acesso rápido</strong>
+              <small id="offlineText">Ative para abrir a carteirinha sem internet.</small>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-dados" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Meus dados</h1>
+      </header>
+      <div class="screen-body" id="dadosConteudo"></div>
+    </section>
+
+    <section class="screen" id="screen-pagamentos" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Pagamentos</h1>
+      </header>
+      <div class="screen-body">
+        <h2 class="sec-title">Parcelas em aberto</h2>
+        <div id="pagamentosLista"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-atestado" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Atestado de matrícula</h1>
+      </header>
+      <div class="screen-body">
+        <article class="card file-preview">
+          <div class="pdf-badge">PDF</div>
+          <div>
+            <strong>AtestadoMatricula.pdf</strong>
+            <span id="atestadoMeta">PDF</span>
+          </div>
+        </article>
+        <p class="hint" style="margin-top:12px;">Documento simulado de vínculo. Nenhum arquivo real é gerado.</p>
+        <button type="button" class="btn btn-navy btn-block" data-action="open-share">Compartilhar</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-integralizacao" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Integralização curricular</h1>
+      </header>
+      <div class="screen-body">
+        <div class="tabs" id="tabsSem" role="tablist" aria-label="Semestres">
+          <button type="button" role="tab" class="on" data-action="semestre" data-sem="1" aria-selected="true"><b>1º</b><span>semestre</span></button>
+          <button type="button" role="tab" data-action="semestre" data-sem="2" aria-selected="false"><b>2º</b><span>semestre</span></button>
+          <button type="button" role="tab" data-action="semestre" data-sem="3" aria-selected="false"><b>3º</b><span>semestre</span></button>
+          <button type="button" role="tab" data-action="semestre" data-sem="4" aria-selected="false"><b>4º</b><span>semestre</span></button>
+        </div>
+        <div id="semPanels"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-notas" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Notas e faltas</h1>
+      </header>
+      <div class="screen-body">
+        <p class="hint">Toque na disciplina para ver o detalhe.</p>
+        <div id="listaNotas"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-chamados" aria-hidden="true">
+      <header class="topbar">
+        <button type="button" class="icon-btn" data-action="back" aria-label="Voltar"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5L8 12l7 7"/></svg></button>
+        <h1>Chamados</h1>
+      </header>
+      <div class="screen-body" id="chamadosBody">
+        <form id="formChamado" novalidate>
+          <label class="lbl">Setor
+            <select name="setor">
+              <option>Secretaria</option>
+              <option>Financeiro</option>
+              <option>Coordenação</option>
+              <option>Tecnologia da informação</option>
+              <option>Biblioteca</option>
+            </select>
+          </label>
+          <label class="lbl">Tipo de problema
+            <select name="tipo">
+              <option>Documento acadêmico</option>
+              <option>Financeiro</option>
+              <option>Acesso ao portal</option>
+              <option>Nota ou frequência</option>
+              <option>Estágio</option>
+              <option>Outros</option>
+            </select>
+          </label>
+          <div class="lbl">Urgência
+            <div class="urgs">
+              <label><input type="radio" name="urgencia" value="baixa"><span>Baixa</span></label>
+              <label><input type="radio" name="urgencia" value="media" checked><span>Média</span></label>
+              <label><input type="radio" name="urgencia" value="alta"><span>Alta</span></label>
+            </div>
+          </div>
+          <label class="lbl">Descrição
+            <textarea name="descricao" maxlength="400" placeholder="Descreva o que aconteceu"></textarea>
+          </label>
+          <p class="form-erro" id="formErro" hidden></p>
+          <button type="submit" class="btn btn-navy btn-block">Enviar chamado</button>
+        </form>
+        <h2 class="sec-title">Meus chamados</h2>
+        <div id="listaChamados"></div>
+      </div>
+    </section>
+
+    <div class="loader" id="loader" aria-hidden="true">
+      <div class="loader-card" role="status">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>CARREGANDO...</p>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <div class="overlay center" id="overlaySair" data-action="scrim" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="sairTitulo">
+        <div class="warn-ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 7V5h8v14h-8v-2"/><path d="M4 12h10"/><path d="M7 9l-3 3 3 3"/></svg>
+        </div>
+        <h2 id="sairTitulo">SAIR DO APLICATIVO?</h2>
+        <p>Você precisará fazer login novamente para acessar sua conta.</p>
+        <div class="btn-row">
+          <button type="button" class="btn btn-gray" data-action="close">Voltar</button>
+          <button type="button" class="btn btn-red" data-action="confirm-exit">Sair</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="overlay center" id="overlayPay" data-action="scrim" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+        <h2 id="payTitle">Pix</h2>
+        <div id="payBody"></div>
+        <button type="button" class="btn btn-navy btn-block" id="payMain" data-action="pay-main">Fechar</button>
+      </div>
+    </div>
+
+    <div class="overlay sheet" id="overlayShare" data-action="scrim" hidden>
+      <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+        <div class="grab"></div>
+        <div class="file-preview" style="margin-bottom:8px;">
+          <div class="pdf-badge">PDF</div>
+          <div>
+            <strong id="shareTitle">AtestadoMatricula.pdf</strong>
+            <span>PDF gerado no servidor</span>
+          </div>
+        </div>
+        <button type="button" class="share-btn" data-action="share" data-app="Salvar em arquivos"><span class="app-ico">↓</span>Salvar em arquivos</button>
+        <button type="button" class="share-btn" data-action="share" data-app="Mensagens"><span class="app-ico">✉</span>Mensagens</button>
+        <button type="button" class="share-btn" data-action="share" data-app="E-mail"><span class="app-ico">@</span>E-mail</button>
+        <button type="button" class="share-btn" data-action="share" data-app="Notas"><span class="app-ico">✎</span>Notas</button>
+        <button type="button" class="share-btn linkish" data-action="close">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="overlay sheet" id="overlayTimeline" data-action="scrim" hidden>
+      <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="tlTitulo">
+        <div class="grab"></div>
+        <h2 id="tlTitulo" style="text-align:left;">Chamado</h2>
+        <p class="lead" id="tlSub" style="text-align:left;"></p>
+        <p id="tlDesc" class="value"></p>
+        <ol class="tl" id="tlLista"></ol>
+        <button type="button" class="btn btn-gray btn-block" data-action="close" style="margin-top:8px;">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js" defer></script>
+  <script src="/js/pwa.js" defer></script>
+  <script src="/js/app.js" defer></script>
+</body>
+</html>
+
