@@ -5,6 +5,12 @@ Aplicativo acadêmico fictício (projeto de extensão): carteira estudantil, dad
 
 Stack: **FastAPI + SQLite + SQLAlchemy 2.0** no backend; front estático em `static/` com **PWA** (manifest + service worker).
 
+### Telas
+
+| Home | Carteira estudantil | Chamados |
+|:----:|:-------------------:|:--------:|
+| ![Home do UniApp](imgs/img.png) | ![Carteira estudantil](imgs/img2.png) | ![Chamados](imgs/img3.png) |
+
 ---
 
 ## Credenciais de demonstração
