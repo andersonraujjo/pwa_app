@@ -1,0 +1,1 @@
+"""UniApp — backend FastAPI do portal do aluno (dados fictícios)."""

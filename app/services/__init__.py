@@ -1,0 +1,1 @@
+"""Serviços auxiliares (PDF, QR, frequência)."""
